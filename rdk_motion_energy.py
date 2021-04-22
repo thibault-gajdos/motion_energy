@@ -55,7 +55,7 @@ number_of_dots =  data_array[0,7].shape[1]
 ## filters
 filter_shape = 64, 64, 25 
 filter_res = 1 / ppd, 1 / ppd, framerate
-filters = me.motion_filters(filter_shape, filter_res) ## create filters
+filters = me.motion_filters(filter_shape, filter_res, csigx=0.35, k=125) ## create filters
 data_right = data_array[np.where(data_array[:,3] == 'a')]
 data_left = data_array[np.where(data_array[:,3] == 'p')]
       
@@ -94,6 +94,3 @@ ax.set(xlabel="time",
        ylabel="sensory weights (a.u.)")
 plt.show()
 plt.close('all')
-
-## erase buffer: C-c M-o
-

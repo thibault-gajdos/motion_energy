@@ -71,7 +71,7 @@ fixation = visual.GratingStim(win=win,
 
 #######################Parameters for RDK stimuli
 framerate = 60.0
-speed_deg_sec =5.#5.0 #in degrees/s 12 in Pilly in Seitz; corresponds to the filters
+speed_deg_sec =8 #9.0 #in degrees/s 12 in Pilly in Seitz; corresponds to the filters
 dot_density = 16.7#in deg-2 s-1
 rayon_cercle = 9.0#in deg
 number_of_dots = int(np.round(dot_density * np.pi * np.square(rayon_cercle) * (1/framerate)))
