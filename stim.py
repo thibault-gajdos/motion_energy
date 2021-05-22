@@ -117,6 +117,16 @@ mySound = sound.Sound('A', secs = 0.08)
 
 change_grams_relative(3100,3100)
 
+## Initialisation before main loop
+trial = 0
+data_container = []
+n_pix = int(2 * rayon_cercle * ppd) ##image size in pixels
+grid = np.linspace(-rayon_cercle, rayon_cercle, n_pix) ##grid for mesh
+xx, yy = np.meshgrid(grid, grid) ##mesh frame
+
+##initialization before each trial
+ dots_coord = []
+
 while True: 
     theseKeys = resp.getKeys(keyList=['g','d'], waitRelease=False)
     if defaultKeyboard.getKeys(keyList=["escape"], waitRelease=False):
@@ -128,7 +138,15 @@ while True:
         resp.clearEvents(eventType='keyboard')
         change_grams_relative(3100,3100)
     dots.draw()
-    win.flip()      
+     ## recover dots coordinate and translate them on a mesh
+        current_frame =  np.zeros_like(xx) ##empty frame
+        y = dots._verticesBase.transpose()
+        i, j = np.round(y * ppd + rayon_cercle * ppd -  dotsize / 2).astype(np.int)
+        current_frame[i, j] = 1 ##fill the mesh
+        current_frame = maximum_filter(current_frame,  dotsize) ##build dots of size=dotsize        
+        dots_coord.append(current_frame)
+    win.flip()
+dots_coord = np.stack(dots_coord,axis = -1)
 
 #100
 #600
