@@ -14,7 +14,9 @@ from psychopy.preferences import prefs
 prefs.hardware['audioLib'] = ['PTB']
 from psychopy import sound
 import serial
-import time 
+import time
+from psychopy.tools.monitorunittools import deg2pix
+from scipy.ndimage import maximum_filter
 
 
 port_usb_serie = serial.Serial(port ="COM3",baudrate =115200)
