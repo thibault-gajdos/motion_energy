@@ -13,6 +13,7 @@ from pathlib import Path
 from psychopy.hardware import keyboard
 from psychopy.tools.monitorunittools import deg2pix
 from scipy.ndimage import maximum_filter
+from scipy import sparse
 
 ## * informations & files
 
@@ -96,7 +97,7 @@ dots=visual.DotStim(win=win, name='random_dots',
 ## possible_stim
 direction_array = np.array([0, 180]) #direction: 0=right, 180=left
 possible_stim = [[direction] for direction in direction_array]
-n_trial = 100 ## number of trials 
+n_trial = 5 ## number of trials 
 
 ##  sequence
 seq = np.empty((0,2))
@@ -175,12 +176,13 @@ for i in range(len(seq)):
                 core.quit()
         dots.draw()
         ## recover dots coordinate and translate them on a mesh
-        current_frame =  np.zeros_like(xx) ##empty frame
+        current_frame =  np.zeros_like(xx, dtype=np.bool) ##empty frame
         y = dots._verticesBase.transpose()
         i, j = np.round(y * ppd + rayon_cercle * ppd -  dotsize / 2).astype(np.int)
         current_frame[i, j] = 1 ##fill the mesh
-        current_frame = maximum_filter(current_frame,  dotsize) ##build dots of size=dotsize        
-        dots_coord.append(current_frame)
+        current_frame = maximum_filter(current_frame,  dotsize) ##build dots of size=dotsize
+        sparse_current_frame =  sparse.csr_matrix(current_frame)
+        dots_coord.append(sparse_current_frame)
         win.flip()  
         if kb_delay == 0:
             kb.clearEvents(eventType='keyboard')
